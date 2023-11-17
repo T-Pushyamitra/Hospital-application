@@ -1,6 +1,5 @@
 
-export function getUTCDateNoTime(date) {
-    return new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
-    );
+exports.getDateNoTime = (date) => {
+  console.log(date.getDate())
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }

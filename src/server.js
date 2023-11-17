@@ -1,10 +1,10 @@
 require("dotenv").config();
-const express = require("express");
 import mongoose from "mongoose";
 import * as bodyParser from "body-parser";
-import usersRouter from "./services/users/UsersRouter.js";
 
-import { apiPath } from "./helpers/constants.js";
+const express = require("express");
+const usersRouter = require("./routes/user.router")
+const { apiPath } = require("./helpers/constants")
 
 export const runServer = async (port, mongoUri) => {
     if (!port) {
@@ -12,15 +12,13 @@ export const runServer = async (port, mongoUri) => {
     }
   
     // Db connection
-    await mongoose.connect(mongoUri, {
-      useNewUrlParser: true
-    });
+    await mongoose.connect(mongoUri);
   
     // Express Object
     const app = express();
   
     const server = app.listen(port, () => {
-      console.log(`Application started. http://localhost:${port}/`);
+      console.log(`Application started. http://localhost:${port}`);
     });
   
     app.use(bodyParser.json({ limit: "10mb" }));
