@@ -46,6 +46,9 @@ exports.getUserByPhoneNumber = (phoneNumber) => {
   return getUserByPhoneNumber(phoneNumber);
 }
 
+exports.isPhoneNumberExsits = (phoneNumber) => {
+  return getUserByPhoneNumber(phoneNumber)? true: false;
+}
 
 function validateUser(user, create=false){
   

@@ -8,10 +8,11 @@ let UserSchema = new Schema(
         phoneNumber     : { type: String, required: true, unique: true },
         email           : { type: String, required: true },
         sex             : { type: String, required: true },
-        password        : { type: String, required: true },
         dateOfBirth     : { type: Date },
         dateOfJoining   : { type: Date },
-        role            : { type: String, defaultValue: 'patient' }
+        role            : { type: String, defaultValue: 'patient' },
+        password        : { type: String, required: true },
+        token           : { type: String },
     },
     { versionKey: false, autoIndex: true }
 );

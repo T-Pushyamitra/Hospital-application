@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import * as bodyParser from "body-parser";
 
 const express = require("express");
-const usersRouter = require("./routes/user.router")
 const { apiPath } = require("./helpers/constants")
+
+const user_routes = require("./routes/user.router")
+const auth_routes = require("./auth/auth.routes")
 
 export const runServer = async (port, mongoUri) => {
     if (!port) {
@@ -24,7 +26,8 @@ export const runServer = async (port, mongoUri) => {
     app.use(bodyParser.json({ limit: "10mb" }));
     app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
   
-    app.use(apiPath, usersRouter);
+    app.use(apiPath, user_routes);
+    app.use(apiPath, auth_routes);
   
     app.use((error, req, res, next) => {
       res.status(error.status || 500);
