@@ -7,8 +7,9 @@ const { getUsers, getUserByPhoneNumber, createUser, updateUser } = require("../s
 exports.getUsersList = async (req, res) => {
     try{
         const users = await getUsers();
-        
-        return res.json({message: `Found total ${users.lenght} user`, data: users, status: 200 });
+
+        let totalUsers=users.length;
+        return res.json({message: `Found total ${totalUsers} users`, data: users, status: 200 });
     }
     catch{
         return res.status(500).json({message: "Failed to get all the users list"});
