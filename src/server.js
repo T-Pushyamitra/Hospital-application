@@ -11,6 +11,8 @@ const auth_routes = require('./auth/auth.routes');
 const role_routers = require('./routes/role.router');
 const permission_router = require('./routes/permission.router');
 
+const cors = require('cors');
+
 export const runServer = async (port, mongoUri) => {
   if (!port) {
     process.exit(1);
@@ -40,8 +42,26 @@ export const runServer = async (port, mongoUri) => {
     res.json({
       status: error.status,
       message: error.message,
+      });
     });
-  });
 
-  return server;
+      // Allow all
+      app.use(cors());
+
+
+      app.use(bodyParser.json({ limit: "10mb" }));
+      app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+    
+      app.use(apiPath, usersRouter);
+    
+      app.use((error, req, res, next) => {
+        res.status(error.status || 500);
+    
+        res.json({
+          status: error.status,
+          message: error.message
+        });
+      });
+    
+      return server;
 };
