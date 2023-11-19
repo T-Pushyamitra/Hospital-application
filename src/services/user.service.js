@@ -1,83 +1,83 @@
+import { getDateNoTime } from '../helpers/utils';
+import {
+  index,
+  update,
+  isPhoneNumberExsits,
+  isEmailExsits,
+  getUserByPhoneNumber,
+} from '../daos/user.dao';
+import { validateUser } from '../validators/user.validate';
+import { getRoleById } from '../daos/role.dao';
 
-import { getDateNoTime } from "../helpers/utils";
-import { index, create, update, getUserByPhoneNumber  } from '../daos/user.dao';
+/**
+ * Get all the users.
+ *
+ * @returns {UserModel}
+ */
+exports.getUsers = async () => index();
 
-exports.getUsers = async () => {
-  try{
-    return index();
-  }
-  catch (error){
-    throw error
-  }
-}
+/**
+ * Check if the user is found by phone number..
+ *
+ * @param {string} phoneNumber
+ * @returns {boolean}
+ */
+exports.isPhoneNumberExsits = async (phoneNumber) =>
+  isPhoneNumberExsits(phoneNumber);
 
-exports.createUser = async (user) => {
-  const errors = validateUser(user, create=true);
-  
-  if (errors && errors.length) {
-    throw new Error(errors);
-  }
+/**
+ * Check if the user is found by email.
+ *
+ * @param {string} email
+ * @returns
+ */
+exports.isEmailExsits = async (email) => isEmailExsits(email);
 
-  user.dateOfBirth = user.date_of_birth 
-    ? getDateNoTime(new Date(user.dateOfBirth)) 
-    : undefined ;
-  
-  user.dateOfJoining = getDateNoTime(new Date());
-
-  user.role = 'Patient';
-  return create({ ...user});
-}
-
+/**
+ * Update the user by id.
+ *
+ * @param {string} id
+ * @param {UserModel} user
+ * @returns {UserModel}
+ */
 exports.updateUser = async (id, user) => {
+  // Check if any errors are in requested body. And throw error.
   const errors = validateUser(user);
-  
+
   if (errors && errors.length) {
     throw new Error(errors);
   }
 
-  user.dateOfBirth = user.date_of_birth 
-    ? getDateNoTime(new Date(user.dateOfBirth)) 
-    : undefined ;
-  
-    return update(id, user);
-}
+  // Convert passed date of birth.
+  user.dateOfBirth = user.date_of_birth
+    ? getDateNoTime(new Date(user.dateOfBirth))
+    : undefined;
 
-exports.getUserByPhoneNumber = (phoneNumber) => {
-  return getUserByPhoneNumber(phoneNumber);
-}
+  return update(id, user);
+};
 
-exports.isPhoneNumberExsits = (phoneNumber) => {
-  return getUserByPhoneNumber(phoneNumber)? true: false;
-}
+/**
+ * Get the user by phone number.
+ *
+ * @param {string} phoneNumber
+ * @returns {UserModel}
+ */
+exports.getUserByPhoneNumber = (phoneNumber) =>
+  getUserByPhoneNumber(phoneNumber);
 
-function validateUser(user, create=false){
-  
-  if (!user) {
-    return ["user is required"];
-  }
-  
-  if (user.firstName.length > 10){
-    return [" First name should be of max char 10"]
-  }
+/**
+ * Get all the users by the role id.
+ *
+ * @param {string} roleId
+ * @returns {UserModel}
+ */
+exports.getUsersByRoleId = async (roleId) => {
+  const role = await getRoleById(roleId);
 
-  if (user.lastName.length > 10){
-    return [" Last name should be of max char 10"]
-  }
-
-  if (!user.password){
-    return ["password is required"];
+  if (!role) {
+    throw new Error(['Role was not found']);
   }
 
-  if (create && getUserByPhoneNumber(user.phoneNumber)){
-    return [`Phone Number '${user.phoneNumber}' already exists.`]
-  }
-  
-  const errors = [];
-  
-  if (!user.firstName || !user.lastName || !user.email || !user.phoneNumber) {
-    errors.push("First name, Last name, Email, Phone Number are required");
-  }
-  
-  return errors;
-}
-
+  const users = index({ role: role._id });
+  return users;
+};
