@@ -5,6 +5,7 @@ import * as bodyParser from "body-parser";
 const express = require("express");
 const usersRouter = require("./routes/user.router")
 const { apiPath } = require("./helpers/constants")
+const cors = require('cors');
 
 export const runServer = async (port, mongoUri) => {
     if (!port) {
@@ -21,6 +22,11 @@ export const runServer = async (port, mongoUri) => {
       console.log(`Application started. http://localhost:${port}`);
     });
   
+
+    // Allow all
+    app.use(cors());
+
+
     app.use(bodyParser.json({ limit: "10mb" }));
     app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
   
