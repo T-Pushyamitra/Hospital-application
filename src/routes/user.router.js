@@ -1,11 +1,17 @@
-const express = require("express")
-const router = express.Router()
+const express = require('express');
 
-const { getUserListByPhoneNumber, getUsersList, createNewUser, updateUser } = require("../controllers/user.controller");
+const router = express.Router();
 
+const {
+  getUserListByRoleId,
+  getUsersList,
+  updateUser,
+} = require('../controllers/user.controller');
 
-router.route("/users").get(getUsersList).post(createNewUser);
-router.route("/user/:id").put(updateUser);
-router.route("^/users/:phoneNumber([0-9]+)").get(getUserListByPhoneNumber);
+const { auth, permit } = require('../auth/auth.middleware');
+
+router.route('/').get(auth, permit(['CAN_READ_USER']), getUsersList);
+router.route('/:id').post(updateUser);
+router.route('/role/:roleId').get(getUserListByRoleId);
 
 module.exports = router;
