@@ -51,5 +51,6 @@ exports.updateRole = async (id, role) => {
   return update(id, role);
 };
 
-exports.addPermissionsToRole = async (rolePermission) =>
-  addPermissionsToRole(rolePermission);
+exports.addPermissionsToRole = async (rolePermission) =>{
+    addPermissionsToRole(rolePermission);
+}

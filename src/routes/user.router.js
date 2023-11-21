@@ -11,7 +11,7 @@ const {
 const { auth, permit } = require('../auth/auth.middleware');
 
 router.route('/').get(auth, permit(['CAN_READ_USER']), getUsersList);
-router.route('/:id').post(updateUser);
+router.route('/:id').put(updateUser);
 router.route('/role/:roleId').get(getUserListByRoleId);
 
 module.exports = router;
