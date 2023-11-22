@@ -1,17 +1,25 @@
 import "./App.css";
-import ButtonComponent from "./components/ButtonComponent.jsx";
+import ResponsiveAppBar from "./components/Nabar/NavbarComponent";
+import { Routes, Route } from "react-router-dom";
+import ButtonComponent from "./components/ButtonComponent";
+import useAuth from "./hooks/useAuth";
+import LoginComponent from "./components/Login/LoginComponent";
 
 function App() {
-  let loginTexts = ["Login", "Register"];
+
+  const { auth, setAuth } = useAuth();
+
+  if (!auth) {
+    return <LoginComponent setAuth={setAuth}/>
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-                <div style={{ margin: '20px'}}>
-        {loginTexts.map((item, index) => (
-          <ButtonComponent key={index} buttonText={item} />
-        ))}
-        </div>
-      </header>
+      <ResponsiveAppBar pages={['Home', 'Roles']}/>
+      <Routes>
+          <Route path="/" element={<LoginComponent />} />
+          <Route path='/Roles' element={<ButtonComponent buttonText={"Hello"}/>} />
+      </Routes>
     </div>
   );
 }
