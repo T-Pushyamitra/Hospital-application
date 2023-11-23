@@ -1,15 +1,18 @@
 import "./App.css";
 import ButtonComponent from "./components/ButtonComponent.jsx";
+import Login from "./components/Login.jsx";
+import { TextField, FormControl, Button } from "@mui/material";
+import { render } from "@testing-library/react";
+import React, {useState} from "react";
 
 function App() {
-  let loginTexts = ["Login", "Register"];
+  let textsForLoginAndRegisterButtons = ["Login", "Register"];
+  
   return (
     <div className="App">
       <header className="App-header">
-                <div style={{ margin: '20px'}}>
-        {loginTexts.map((item, index) => (
-          <ButtonComponent key={index} buttonText={item} />
-        ))}
+        <div style={{ margin: "20px" }}>
+        <Login/>
         </div>
       </header>
     </div>

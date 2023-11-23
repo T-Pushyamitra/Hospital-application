@@ -51,8 +51,7 @@ export const runServer = async (port, mongoUri) => {
 
       app.use(bodyParser.json({ limit: "10mb" }));
       app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-    
-      app.use(apiPath, usersRouter);
+  
     
       app.use((error, req, res, next) => {
         res.status(error.status || 500);
