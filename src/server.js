@@ -10,6 +10,7 @@ const user_routes = require('./routes/user.router');
 const auth_routes = require('./auth/auth.routes');
 const role_routers = require('./routes/role.router');
 const permission_router = require('./routes/permission.router');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const cors = require('cors');
 
@@ -24,6 +25,13 @@ export const runServer = async (port, mongoUri) => {
   // Express Object
   const app = express();
 
+
+      // Allow all
+      app.use(cors({ 
+        origin: "http://localhost:3000",  
+        methods: ["GET", "POST"]
+      }));
+      
   const server = app.listen(port, () => {
     console.log(`Application started. http://localhost:${port}`);
   });
@@ -45,14 +53,8 @@ export const runServer = async (port, mongoUri) => {
       });
     });
 
-      // Allow all
-      app.use(cors());
-
-
       app.use(bodyParser.json({ limit: "10mb" }));
       app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-    
-      app.use(apiPath, usersRouter);
     
       app.use((error, req, res, next) => {
         res.status(error.status || 500);

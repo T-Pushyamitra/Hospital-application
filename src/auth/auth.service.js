@@ -65,9 +65,11 @@ exports.login = async (req, res) => {
     // Get user input
     const _user = req.body;
 
+    console.log(_user)
+
     // Validate user input
     if (!(_user.phoneNumber && _user.password)) {
-      return res.status(400).send('All input is required');
+      return res.status(400).send({error: 'All input is required'});
     }
 
     // Validate if user exist in our database
@@ -90,10 +92,12 @@ exports.login = async (req, res) => {
       // save user token
       user.token = token;
 
+      console.log("Logged in successfully");
       // user
-      return res.status(200).json(user);
+      return res.status(200).json({ data: user});
     }
-    return res.status(400).send('Invalid Credentials');
+    console.log("Failed invalid credentials");
+    return res.status(400).send({error: 'Invalid Credentials'});
   } catch (err) {
     console.log(err);
     return err;
