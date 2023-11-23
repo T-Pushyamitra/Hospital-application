@@ -10,6 +10,7 @@ const user_routes = require('./routes/user.router');
 const auth_routes = require('./auth/auth.routes');
 const role_routers = require('./routes/role.router');
 const permission_router = require('./routes/permission.router');
+const patient_records_router = require('./routes/patient_records.router');
 
 const cors = require('cors');
 
@@ -35,6 +36,7 @@ export const runServer = async (port, mongoUri) => {
   app.use(`${apiPath}/auth`, auth_routes);
   app.use(`${apiPath}/roles`, role_routers);
   app.use(`${apiPath}/permission`, permission_router);
+  app.use(`${apiPath}/patient-records`,patient_records_router);
 
   app.use((error, req, res, next) => {
     res.status(error.status || 500);
@@ -52,7 +54,7 @@ export const runServer = async (port, mongoUri) => {
       app.use(bodyParser.json({ limit: "10mb" }));
       app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
     
-      app.use(apiPath, usersRouter);
+      //app.use(apiPath, usersRouter);
     
       app.use((error, req, res, next) => {
         res.status(error.status || 500);
