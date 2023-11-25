@@ -5,9 +5,6 @@ import LoginComponent from "./components/Login/LoginComponent";
 import SuperAdminHomeComponent from "./components/SuperAdminHomeComponent/SuperAdminHomeComponent";
 import ProtectedRoute from "./protectedRoutes/protectedRoutes";
 import useAuth from "./hooks/useAuth";
-import ButtonComponent from "./components/ButtonComponent.jsx";
-import Login from "./components/Login.jsx";
-import { TextField, FormControl, Button } from "@mui/material";
 import { render } from "@testing-library/react";
 import React, {useState} from "react";
 
