@@ -8,16 +8,24 @@ import useAuth from "./hooks/useAuth";
 
 // TODO: 
 function App() {
-    const {auth} = useAuth();
+  const { auth } = useAuth();
+
+  if (!auth) {
+    <>
+      <Navigate to="/login" />
+      <LoginComponent />
+    </>
+  }
+
   return (
     <div className="App">
-      <ResponsiveAppBar pages={['Home', 'Roles']}/>
+      {auth ? <ResponsiveAppBar pages={['Home', 'Roles']} /> : <></>}
       <Routes>
-      <Route element={<ProtectedRoute/>}>
-              <Route path='/' element={<SuperAdminHomeComponent/>} />
-              <Route path="/roles" element={<SuperAdminHomeComponent/>} />
-          </Route>
-          <Route path='/login' element={!auth ? <LoginComponent/> : <Navigate to="/" />}/>
+        <Route element={<ProtectedRoute />}>
+          <Route path='/' element={<SuperAdminHomeComponent />} />
+          <Route path="/roles" element={<SuperAdminHomeComponent />} />
+        </Route>
+        <Route path='/login' element={!auth ? <LoginComponent /> : <Navigate to="/" />} />
       </Routes>
     </div>
   );

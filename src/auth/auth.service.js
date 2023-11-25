@@ -1,14 +1,16 @@
 // Ref: https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
-import { getDateNoTime } from '../helpers/utils';
-import { create } from '../daos/user.dao';
-import { validateUser } from '../validators/user.validate';
+import { getDateNoTime } from "../helpers/utils";
+import { create } from "../daos/user.dao";
+import { validateUser } from "../validators/user.validate";
 import {
   isPhoneNumberExsits,
   getUserByPhoneNumber,
-} from '../services/user.service';
+} from "../services/user.service";
+import { logger } from "../helpers/logger";
+import { validateLogin } from "../validators/login.validate";
 
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const createUser = async (user) => {
   const errors = await validateUser(user);
@@ -45,8 +47,8 @@ exports.register = async (req, res) => {
       { user_id: user._id, user_phoneNumber: user.phoneNumber },
       process.env.TOKEN_KEY,
       {
-        expiresIn: '2h',
-      },
+        expiresIn: "2h",
+      }
     );
     // save user token
     user.token = token;
@@ -65,44 +67,54 @@ exports.login = async (req, res) => {
     // Get user input
     const _user = req.body;
 
-    console.log(_user)
+    const errors = validateLogin(_user);
 
-    // Validate user input
-    if (!(_user.phoneNumber && _user.password)) {
-      return res.status(400).send({error: 'All input is required'});
+    if (errors) {
+      return res(400).json({ error: errors });
     }
 
     // Validate if user exist in our database
     const user = await getUserByPhoneNumber(_user.phoneNumber);
 
     const _isPhoneNumberExsits = await isPhoneNumberExsits(_user.phoneNumber);
-    if (
-      _isPhoneNumberExsits &&
-      (await bcrypt.compare(_user.password, user.password))
-    ) {
+
+    if (!_isPhoneNumberExsits) {
+      return res(400).json({
+        error: `User with ${_user.phoneNumber} doesn't exists. Please Sign up`,
+      });
+    }
+
+    if (await bcrypt.compare(_user.password, user.password)) {
       // Create token
       const token = jwt.sign(
         { user_id: user._id, user_phoneNumber: _user.phoneNumber },
         process.env.TOKEN_KEY,
         {
-          expiresIn: '2h',
-        },
+          expiresIn: "2h",
+        }
       );
 
       // save user token
       user.token = token;
 
-      console.log("Logged in successfully");
       // user
-      return res.status(200).json({ data: user});
+      logger.info(
+        `User ${user.firstName} ${user.lastName} logged in successfully`
+      );
+      return res
+        .status(200)
+        .json({
+          message: `Logged in as ${user.firstName} ${user.lastName}`,
+          data: user,
+        });
     }
-    console.log("Failed invalid credentials");
-    return res.status(400).send({error: 'Invalid Credentials'});
-  } catch (err) {
-    console.log(err);
-    return err;
+
+    logger.error("Password was incorrect");
+    return res.status(400).json({ error: "Enter password was incorrect." });
+  } catch (error) {
+    logger.error(error.message);
+    return res.status(400).json({ error: error.message });
   }
-  // Our register logic ends here
 };
 
-exports.logout = async (req, res) => { };
+exports.logout = async (req, res) => {};

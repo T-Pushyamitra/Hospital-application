@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import Cookies from "universal-cookie";
 
 import { login } from "../../services/user.services";
-
-// TODO: Set the auth token on to cookies
-const cookies = new Cookies();
+import useAuth from "../../hooks/useAuth";
 
 export default function LoginComponent() {
+
+  const {setAuth} = useAuth();
 
   // initial state
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -20,9 +19,8 @@ export default function LoginComponent() {
     // make the API call
     await login(phoneNumber, password)
       .then((result) => {
-        console.log(result)
         // set the cookie
-        cookies.set('TOKEN', result.data.token, {path: "/"});
+        setAuth(result.data.token);
 
         // redirect user to the auth page
         window.location.href = "/";

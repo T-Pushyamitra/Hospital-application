@@ -8,7 +8,7 @@ const {
   updateUser,
 } = require('../controllers/user.controller');
 
-const { auth, permit } = require('../auth/auth.middleware');
+const { auth, permit } = require('../middlewares/auth.middleware');
 
 router.route('/').get(auth, permit(['CAN_READ_USER']), getUsersList);
 router.route('/:id').post(updateUser);
