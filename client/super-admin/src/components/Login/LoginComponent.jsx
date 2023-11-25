@@ -11,6 +11,10 @@ export default function LoginComponent() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
 
+  const [firstName, setFirstName] = useState("");
+
+  const [lastName, setLastName] = useState("");
+
   const [activeButton, setActiveButton] = useState("login"); //Setting to login as the landing page is Login
 
   const handleToggle = (buttonText) => {
@@ -30,7 +34,7 @@ export default function LoginComponent() {
       console.log("nope");
     }
 
-    //To update the Active Button 
+    //To update the Active Button
     handleToggle(e.target.innerText);
 
     // prevent the form from refreshing the whole page
@@ -76,6 +80,31 @@ export default function LoginComponent() {
           fullWidth
           sx={{ mb: 3 }}
         />
+        {activeButton == "register" ? (
+          <>
+            <TextField
+              label="First Name"
+              onChange={(e) => setFirstName(e.target.value)}
+              // required
+              variant="outlined"
+              color="secondary"
+              type="text"
+              sx={{ mb: 3 }}
+              fullWidth
+              value={firstName}
+            />
+            <TextField
+              label="Last Name"
+              onChange={(e) => setLastName(e.target.value)}
+              // required
+              variant="outlined"
+              color="secondary"
+              value={lastName}
+              fullWidth
+              sx={{ mb: 3 }}
+            />{" "}
+          </>
+        ) : null}
         <Button
           variant="outlined"
           color="primary"
