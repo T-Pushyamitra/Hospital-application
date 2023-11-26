@@ -1,7 +1,20 @@
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 export async function getUsers(){
-    const response=await fetch('http://localhost:8080/api/v1/users', {mode: 'cors'})
+    const requestOptions = {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': cookies.get('TOKEN')
+        },
+    };
+    const response=await fetch('http://localhost:8080/api/v1/users', requestOptions)
     const data=await response.json();
-    return data.data;
+    return data;
 }
 
 export async function login(_phoneNumber, _password){

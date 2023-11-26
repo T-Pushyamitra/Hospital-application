@@ -45,7 +45,7 @@ exports.isEmailExsits = async (_email) => {
  * @param {map} filter
  * @returns {UserModel} returns list of users
  */
-exports.index = async (filters = {}) => await UserModel.find(filters);
+exports.index = async (filters = {}) => await UserModel.find(filters).populate('role');
 
 /**
  * Save a new user to db.

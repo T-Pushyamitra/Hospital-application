@@ -5,6 +5,7 @@ import LoginComponent from "./components/Login/LoginComponent";
 import SuperAdminHomeComponent from "./components/SuperAdminHomeComponent/SuperAdminHomeComponent";
 import ProtectedRoute from "./protectedRoutes/protectedRoutes";
 import useAuth from "./hooks/useAuth";
+import TableComponent from "./components/Table/TableComponent";
 
 // TODO: 
 function App() {
@@ -19,11 +20,11 @@ function App() {
 
   return (
     <div className="App">
-      {auth ? <ResponsiveAppBar pages={['Home', 'Roles']} /> : <></>}
+      {auth ? <ResponsiveAppBar pages={['Home', 'Users']} /> : <></>}
       <Routes>
         <Route element={<ProtectedRoute />}>
           <Route path='/' element={<SuperAdminHomeComponent />} />
-          <Route path="/roles" element={<SuperAdminHomeComponent />} />
+          <Route path="/users" element={<TableComponent />} />
         </Route>
         <Route path='/login' element={!auth ? <LoginComponent /> : <Navigate to="/" />} />
       </Routes>

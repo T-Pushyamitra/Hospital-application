@@ -14,12 +14,13 @@ const {
  */
 exports.getUsersList = async (req, res) => {
   try {
-    const users = await getUsers();
+    const _users = await getUsers();
 
-    const totalUsers = users?.length || 0;
-    return res.json({
+    const totalUsers = _users?.length || 0;
+    console.log(_users)
+    return res.send({
       message: `Found total ${totalUsers} users`,
-      data: users,
+      data: _users,
       status: 200,
     });
   } catch (error) {
