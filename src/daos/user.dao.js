@@ -8,7 +8,7 @@ const UserModel = require('../models/user.model');
  */
 exports._isUserExists = async (_id) => {
   const user_count = await UserModel.findOne().where('_id').equals(_id).count();
-  return !!user_count;
+  return user_count > 0;
 };
 
 /**
@@ -22,7 +22,7 @@ exports.isPhoneNumberExsits = async (_phoneNumber) => {
     .where('phoneNumber')
     .equals(_phoneNumber)
     .count();
-  return !!user_count;
+  return user_count > 0;
 };
 
 /**
@@ -36,7 +36,7 @@ exports.isEmailExsits = async (_email) => {
     .where('email')
     .equals(_email)
     .count();
-  return !!user_count;
+  return user_count > 0;
 };
 
 /**

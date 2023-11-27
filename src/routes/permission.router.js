@@ -7,7 +7,7 @@ const {
   createNewPermission,
   updatePermission,
 } = require('../controllers/permission.controller');
-const { auth, permit } = require('../auth/auth.middleware');
+const { auth, permit } = require('../middlewares/auth.middleware');
 
 router.route('/').get(getPermissionsList).post(createNewPermission);
 router.route('/:id').post(auth, updatePermission);

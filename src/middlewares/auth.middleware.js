@@ -29,7 +29,6 @@ exports.auth = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, config.TOKEN_KEY);
     req.user = decoded;
-    ``;
   } catch (err) {
     console.error('Authentication was not successfull');
     return res.status(401).send({ error: 'Invalid Token' });
@@ -46,27 +45,27 @@ exports.auth = (req, res, next) => {
  * @param {*} permittedRoles
  * @returns
  */
-exports.permit =
-  (permittedRoles) =>
-  // return a middleware
-  async (request, response, next) => {
-    // Get the user from the previous req
-    const { user } = request;
+ exports.permit =
+ (permittedRoles) =>
+   // return a middleware
+   async (request, response, next) => {
+     // Get the user from the previous req
+     const { user } = request;
 
-    const _user = await getUserById(user.user_id.valueOf());
-    const _userPermissions = await getPermissionsFromRole(
-      _user.role._id.valueOf(),
-    );
+     const _user = await getUserById(user.user_id.valueOf());
+     const _userPermissions = await getPermissionsFromRole(
+       _user.role._id.valueOf(),
+     );
 
-    const _hasPermission = permittedRoles.find(
-      (permittedRole) => _userPermissions.indexOf(permittedRole) !== -1,
-    );
+     const _hasPermission = permittedRoles.find(
+       (permittedRole) => _userPermissions.indexOf(permittedRole) !== -1,
+     );
 
-    if (user && _hasPermission) {
-      next(); // role is allowed, so continue on the next middleware
-    } else {
-      response.status(403).json({
-        message: `Forbidden youd don't have permission ${_hasPermission}`,
-      }); // user is forbidden
-    }
-  };
+     if (user && _hasPermission) {
+       next(); // role is allowed, so continue on the next middleware
+     } else {
+       response.status(403).json({
+         message: `Forbidden youd don't have permission ${_hasPermission}`,
+       }); // user is forbidden
+     }
+   };

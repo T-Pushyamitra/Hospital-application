@@ -14,7 +14,7 @@ import { getRoleById } from '../daos/role.dao';
  *
  * @returns {UserModel}
  */
-exports.getUsers = async () => index();
+exports.getUsers = async () => { return index(); }
 
 /**
  * Check if the user is found by phone number..
@@ -22,8 +22,7 @@ exports.getUsers = async () => index();
  * @param {string} phoneNumber
  * @returns {boolean}
  */
-exports.isPhoneNumberExsits = async (phoneNumber) =>
-  isPhoneNumberExsits(phoneNumber);
+exports.isPhoneNumberExsits = async (phoneNumber) => { return isPhoneNumberExsits(phoneNumber); }
 
 /**
  * Check if the user is found by email.
@@ -31,7 +30,7 @@ exports.isPhoneNumberExsits = async (phoneNumber) =>
  * @param {string} email
  * @returns
  */
-exports.isEmailExsits = async (email) => isEmailExsits(email);
+exports.isEmailExsits = async (email) => { return isEmailExsits(email); }
 
 /**
  * Update the user by id.
@@ -62,8 +61,7 @@ exports.updateUser = async (id, user) => {
  * @param {string} phoneNumber
  * @returns {UserModel}
  */
-exports.getUserByPhoneNumber = (phoneNumber) =>
-  getUserByPhoneNumber(phoneNumber);
+exports.getUserByPhoneNumber = (phoneNumber) => { return getUserByPhoneNumber(phoneNumber); }
 
 /**
  * Get all the users by the role id.
