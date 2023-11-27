@@ -6,6 +6,7 @@ import {
   isPhoneNumberExsits,
   getUserByPhoneNumber,
 } from "../services/user.service";
+import { getRoleByName } from "../daos/role.dao";
 import { logger } from "../helpers/logger";
 import { validateLogin } from "../validators/login.validate";
 
@@ -19,11 +20,17 @@ const createUser = async (user) => {
     throw new Error(errors);
   }
 
-  user.dateOfBirth = user.date_of_birth
+  user.dateOfBirth = user.dateOfBirth
     ? getDateNoTime(new Date(user.dateOfBirth))
     : undefined;
 
   user.dateOfJoining = getDateNoTime(new Date());
+
+  if (!user.role){
+    const role = await getRoleByName("USER");
+    console.log(role);
+    user.role = role._id;
+  }
 
   return create({ ...user });
 };
@@ -54,10 +61,10 @@ exports.register = async (req, res) => {
     user.token = token;
 
     // return new user
-    return res.status(201).json(user);
+    return res.status(201).json({message: "Create a new user" , data:user});
     // Our register logic ends here
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: [error.message] });
   }
 };
 
@@ -70,7 +77,8 @@ exports.login = async (req, res) => {
     const errors = validateLogin(_user);
 
     if (errors) {
-      return res(400).json({ error: errors });
+      logger.error(errors)
+      return res.status(400).json({ error: errors });
     }
 
     // Validate if user exist in our database
@@ -78,11 +86,11 @@ exports.login = async (req, res) => {
 
     const _isPhoneNumberExsits = await isPhoneNumberExsits(_user.phoneNumber);
 
+
     if (!_isPhoneNumberExsits) {
-      return res(400).json({
-        error: `User with ${_user.phoneNumber} doesn't exists. Please Sign up`,
-      });
+      return res.status(400).json({ error: `User with ${_user.phoneNumber} doesn't exists. Please Sign up`});
     }
+
 
     if (await bcrypt.compare(_user.password, user.password)) {
       // Create token
@@ -110,7 +118,7 @@ exports.login = async (req, res) => {
     }
 
     logger.error("Password was incorrect");
-    return res.status(400).json({ error: "Enter password was incorrect." });
+    return res.status(400).json({ error: ["Enter password was incorrect."] });
   } catch (error) {
     logger.error(error.message);
     return res.status(400).json({ error: error.message });

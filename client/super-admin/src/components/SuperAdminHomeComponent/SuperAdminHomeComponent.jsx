@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LogoutComponent from '../Login/LogoutComponent';
+import LogoutComponent from '../Auth/LogoutComponent';
 
 const SuperAdminHomeComponent = () => {
     return (<>

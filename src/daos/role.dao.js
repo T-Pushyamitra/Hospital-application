@@ -46,7 +46,7 @@ exports.index = async () => RoleModel.find();
  * @returns {RoleModel}
  */
 exports.getRoleByName = async (roleName) => {
-  const role = await RoleModel.find().where('roleName').equals(roleName);
+  const role = await RoleModel.findOne().where('roleName').equals(roleName);
   return role;
 };
 
