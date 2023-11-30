@@ -15,9 +15,10 @@ const config = process.env;
  */
 exports.auth = (req, res, next) => {
   // Can pass token from body, as query or in headers
-  const token =
-    req.body.token || req.query.token || req.headers['x-access-token'];
+  const token = req.cookies.token
 
+  console.log(req.cookies);
+  
   // send status 403
   if (!token) {
     console.warn('Token is required for authentication');

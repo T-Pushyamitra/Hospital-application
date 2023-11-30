@@ -27,6 +27,19 @@ exports.getUsersList = async (req, res) => {
   }
 };
 
+exports.getLoggedInUser = async (req, res) => {
+  try{
+    const user = await getUsers({phoneNumber: req.user.phoneNumber});
+    console.log(user)
+    return res.status(200).json({
+      message: "Found successfully",
+      data: user[0]
+    })
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
 /**
  * Get user by phone number.
  *

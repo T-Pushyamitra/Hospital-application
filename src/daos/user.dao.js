@@ -97,7 +97,7 @@ exports.update = async (_userId, _user) => {
 exports.getUserByPhoneNumber = async (_phoneNumber) => {
   const user = await UserModel.findOne()
     .where('phoneNumber')
-    .equals(_phoneNumber);
+    .equals(_phoneNumber).populate();
   return user;
 };
 

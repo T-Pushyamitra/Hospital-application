@@ -8,13 +8,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-import { login } from "../../services/user.services";
-import useAuth from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/auth";
 import Alerts from "../Alert/AlertComponent";
 
 export default function LoginComponent() {
-
-  const { setAuth } = useAuth();
+  const { login } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -30,7 +28,6 @@ export default function LoginComponent() {
 
   const handleChange = (e) => {
     const { name, value } = e;
-    console.log(value);
     if (!value && !error[name]){
       setError({...error, [name]:true});
     }
@@ -49,16 +46,7 @@ export default function LoginComponent() {
       setErrorMessage("Required all the inputs");
     }
     else{
-    await login(signInData)
-      .then((response) => {
-        setAuth(response?.data.token);
-        setSuccessMessage(response.message);
-        window.location.href = "/";
-      })
-      .catch((error) => {
-        console.log(error.message)
-        setErrorMessage(error.message)
-      });
+      login(signInData.phoneNumber, signInData.password)
     }
   };
 

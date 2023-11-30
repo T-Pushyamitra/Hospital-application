@@ -14,10 +14,13 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 
-const settings = ['Profile', 'Account', 'Logout'];
+import Cookies from "universal-cookie";
+
+
+const settings = ['Account', 'Logout'];
+const cookies = new Cookies();
 
 const ResponsiveAppBar = ({pages}) => {
-    console.log(pages)
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,6 +38,14 @@ const ResponsiveAppBar = ({pages}) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+    // logout
+    const handleLogout = () => {
+      // destroy the cookie
+      cookies.remove("TOKEN", { path: "/" });
+      // redirect user to the landing page
+      window.location.href = "/login";
+    }
 
   return (
     <AppBar position="static">
@@ -148,11 +159,16 @@ const ResponsiveAppBar = ({pages}) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" >{setting}</Typography>
-                </MenuItem>
-              ))}
+            {/* <MenuItem key={settings[0]} onClick={handleCloseUserMenu}>
+              <Typography textAlign="center" >
+                <Link to={`/${settings[0]}`}>{ settings[0] }</Link>
+              </Typography>
+            </MenuItem> */}
+            <MenuItem key={settings[1]} onClick={handleCloseUserMenu}>
+              <Typography textAlign="center" >
+                <Link to={`/${settings[1]}`} onClick={handleLogout}>{ settings[1] }</Link>
+              </Typography>
+            </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

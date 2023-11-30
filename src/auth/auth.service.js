@@ -102,18 +102,22 @@ exports.login = async (req, res) => {
         }
       );
 
-      // save user token
-      user.token = token;
-
+      delete user.password;
+      
       // user
       logger.info(
         `User ${user.firstName} ${user.lastName} logged in successfully`
       );
+      res.cookie("token", token, {
+        httpOnly: false,
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+      });
+
       return res
         .status(200)
         .json({
           message: `Logged in as ${user.firstName} ${user.lastName}`,
-          data: user,
+          data: user._id,
         });
     }
 
@@ -125,4 +129,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {};
+exports.logout = async (req, res) => {
+  res.clearCookie('token');
+  res.send(200).json({message: "Logged out successfully"});
+};
