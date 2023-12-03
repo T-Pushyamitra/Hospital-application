@@ -6,11 +6,8 @@ import {
   isEmailExsits,
   getUserByPhoneNumber,
 } from '../daos/user.dao';
-import { validateUser } from '../validators/user.validate';
 import { getRoleById } from '../daos/role.dao';
 
-import { getDateNoTime } from "../helpers/utils";
-import { index, create, update, getUserByPhoneNumber, isPhoneNumberExsits, isEmailExsits  } from '../daos/user.dao';
 /**
  * Get all the users.
  *

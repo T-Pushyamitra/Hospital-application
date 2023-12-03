@@ -8,9 +8,8 @@ const {
   updateUser,
 } = require('../controllers/user.controller');
 
-const { auth, permit } = require('../auth/auth.middleware');
 
-router.route('/').get(auth, permit(['CAN_READ_USER']), getUsersList);
+router.route('/').get(getUsersList);
 router.route('/:id').post(updateUser);
 router.route('/role/:roleId').get(getUserListByRoleId);
 
