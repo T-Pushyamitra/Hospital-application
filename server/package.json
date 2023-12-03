@@ -5,20 +5,30 @@
   "main": "main.js",
   "scripts": {
     "start": "nodemon",
+    "pretest": "eslint --ignore-path .gitignore .",
     "build": "npm run clean && npm run transpile",
     "server": "node ./dist-server/main.js",
     "dev": "npm run build && npm run server",
     "transpile": "babel ./src --out-dir dist-server",
-    "clean": "rimraf dist-server"
+    "clean": "rimraf dist-server",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "eslintConfig": {
+    "extends": ["wesbos"]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "eslint-config-wesbos": "^4.0.1",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.1",
     "nodemon": "^3.0.1"
   },
