@@ -9,6 +9,8 @@ import {
 import { validateUser } from '../validators/user.validate';
 import { getRoleById } from '../daos/role.dao';
 
+import { getDateNoTime } from "../helpers/utils";
+import { index, create, update, getUserByPhoneNumber, isPhoneNumberExsits, isEmailExsits  } from '../daos/user.dao';
 /**
  * Get all the users.
  *
@@ -52,7 +54,6 @@ exports.updateUser = async (id, user) => {
   user.dateOfBirth = user.date_of_birth
     ? getDateNoTime(new Date(user.dateOfBirth))
     : undefined;
-
   return update(id, user);
 };
 
