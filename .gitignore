@@ -1,5 +1,4 @@
 .env
-.DS_Store
-node_modules
+/node_modules/
 /dist-server
 package-lock.json

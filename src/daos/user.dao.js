@@ -5,34 +5,6 @@ const _isUserExists = async (_id) => {
   return await UserModel.findOne().where('_id').equals(_id);
 }
 
-/**
- * Check if the user is found by phone number.
- *
- * @param {string} _phoneNumber
- * @returns {boolean}
- */
-exports.isPhoneNumberExsits = async (_phoneNumber) => {
-  const user_count = await UserModel.findOne()
-    .where('phoneNumber')
-    .equals(_phoneNumber)
-    .count();
-  return user_count > 0;
-};
-
-/**
- * Check if the user is found by email.
- *
- * @param {string} _email
- * @returns {boolean}
- */
-      exports.isEmailExsits = async (_email) => {
-        const user_count = await UserModel.findOne()
-          .where('email')
-          .equals(_email)
-          .count();
-        return user_count > 0;
-      };
-
 // get all the users
 exports.index = async () => {
   return UserModel.find();
