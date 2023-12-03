@@ -8,8 +8,8 @@ const cors = require('cors');
 const { apiPath } = require("./helpers/constants");
 
 // Import all the routes here
-const userRoutes = require("./routes/user.router");
-const authenticationRoutes = require("./routes/authentication.router");
+const userRoutes = require("./routes/user.router").default;
+const authenticationRoutes = require("./routes/authentication.router").default;
 
 require("dotenv").config();
 
@@ -45,8 +45,8 @@ export const runServer = async (port, mongoUri) => {
     app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
   
     // Pass all the routes here.
-    app.use(apiPath, userRoutes);
-    app.use(apiPath, authenticationRoutes);
+    app.use(`${apiPath}/user`, userRoutes);
+    app.use(`${apiPath}/auth`, authenticationRoutes);
  
     return server;
   };

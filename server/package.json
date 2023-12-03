@@ -3,23 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "scripts": {
-    "start": "nodemon",
-    "pretest": "eslint --ignore-path .gitignore .",
-    "build": "npm run clean && npm run transpile",
-    "server": "node ./dist-server/main.js",
-    "dev": "npm run build && npm run server",
-    "transpile": "babel ./src --out-dir dist-server",
-    "clean": "rimraf dist-server",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.5",
+    "@babel/plugin-transform-runtime": "^7.23.3",
+    "@babel/preset-env": "^7.23.5",
+    "@babel/preset-react": "^7.23.3",
+    "rimraf": "^5.0.5"
   },
-  "eslintConfig": {
-    "extends": ["wesbos"]
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "@babel/node": "^7.22.19",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
@@ -32,11 +25,22 @@
     "mongoose": "^8.0.1",
     "nodemon": "^3.0.1"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.3",
-    "@babel/plugin-transform-runtime": "^7.23.3",
-    "@babel/preset-env": "^7.23.3",
-    "rimraf": "^5.0.5"
-  }
+  "scripts": {
+    "start": "nodemon",
+    "pretest": "eslint --ignore-path .gitignore .",
+    "build": "npm run clean && npm run transpile",
+    "server": "node ./dist-server/main.js",
+    "dev": "npm run build && npm run server",
+    "transpile": "babel ./src --out-dir dist-server",
+    "clean": "rimraf dist-server",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "eslintConfig": {
+    "extends": [
+      "wesbos"
+    ]
+  },
+  "author": "",
+  "license": "ISC"
 }

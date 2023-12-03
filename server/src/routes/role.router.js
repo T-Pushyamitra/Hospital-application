@@ -1,17 +1,12 @@
-const express = require('express');
+import { Router } from 'express';
 
-const router = express.Router();
+import { getRolesList, createNewRole, updateRole, addPermissionsToRole } from '../controllers/role.controller';
+import { auth, permit } from '../auth/auth.middleware';
 
-const {
-  getRolesList,
-  createNewRole,
-  updateRole,
-  addPermissionsToRole,
-} = require('../controllers/role.controller');
-const { auth, permit } = require('../auth/auth.middleware');
+const router = Router();
 
-router.route('/').get(getRolesList).post(createNewRole);
-router.route('/role_permission').post(addPermissionsToRole);
-router.route('/:id').post(updateRole);
+router.route('/').get(auth, permit(["CAN_READ_ROLE"]), getRolesList).post(auth, permit(["CAN_READ_ROLE", "CAN_ADD_ROLE"]), createNewRole);
+router.route('/role_permission').post(auth, permit(["CAN_READ_ROLE", "CAN_READ_PREMISSION", "CAN_ADD_ROLE", "CAN_ADD_PREMISSION"]), addPermissionsToRole);
+router.route('/:id').post(auth, permit(["CAN_READ_ROLE", "CAN_UPDATE_ROLE"]), updateRole);
 
-module.exports = router;
+export default router;
