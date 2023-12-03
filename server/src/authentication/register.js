@@ -26,8 +26,11 @@ exports.register = async (req, res) => {
     // Encrypt user password
     _user.password = await bcrypt.hash(_user.password, 10);
 
+
     // Create date object for date of birth
     _user.dateOfBirth = getDateNoTime(new Date(_user.dateOfBirth))
+
+    console.log( _user.dateOfBirth);
 
     // Create date object for date of joining
     _user.dateOfJoining = getDateNoTime(new Date());

@@ -14,25 +14,31 @@ exports.login = async (req, res) => {
     const { phoneNumber, password } = req.body;
 
     // Check for errors in login credentials
-    const errors = validateLogin(phoneNumber, password);
+    const errors = await validateLogin(phoneNumber, password);
 
     if (errors) {
-      logger.error(errors);
+      // logger.error(errors);
       return res.status(400).json({ error: errors });
     }
 
     // Get the user by phone number
     const user = await getUserByPhoneNumber(phoneNumber);
 
+    // Password validation 
+    const _isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!_isPasswordMatch) {
+      return res.status(400).json({ error: ["Provided password was incorrect. Please check it."]});
+    }
+
     // Create a jwt token
     const token = createToken(user._id, phoneNumber);
     
-    logger.info(`Logged in successfully`);
+    // logger.info(`Logged in successfully`);
 
     // Set the token as cookie
     res.cookie("token", token, {
-      httpOnly: false,
-      maxAge: process.env.TOKEN_AGE,
+      httpOnly: false
     });
 
     return res.status(200).json({
@@ -40,7 +46,7 @@ exports.login = async (req, res) => {
       data: {userId : user._id, userPhoneNumber: user.phoneNumber}
     });
   } catch (error) {
-    logger.error(error.message);
+    // logger.error(error.message);
     return res.status(400).json({ error: error.message });
   }
 };
@@ -75,12 +81,5 @@ const validateLogin = async (phoneNumber, password) => {
 
   if (!_isPhoneNumberExsits) {
     return [`User with ${_user.phoneNumber} doesn't exists. Please Sign up`];
-  }
-
-  // Password validation 
-  const _isPasswordMatch = await bcrypt.compare(_user.password, user.password);
-
-  if (!_isPasswordMatch) {
-    return ["Provided password was incorrect. Please check it."];
   }
 };

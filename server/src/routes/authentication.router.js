@@ -5,6 +5,6 @@ const { login } = require("../authentication/login");
 const { register } = require("../authentication/register");
 
 router.route("/auth/login").post(login);
-router.route("/auth/register").put(register);
+router.route("/auth/register").post(register);
 
 module.exports = router;
