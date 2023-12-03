@@ -1,6 +1,6 @@
 
 import { getDateNoTime } from "../helpers/utils";
-import { index, create, update, getUserByPhoneNumber  } from '../daos/user.dao';
+import { index, create, update, getUserByPhoneNumber, isPhoneNumberExsits, isEmailExsits  } from '../daos/user.dao';
 
 exports.getUsers = async () => {
   try{
@@ -41,6 +41,22 @@ exports.updateUser = async (id, user) => {
   
     return update(id, user);
 }
+
+/**
+ * Check if the user is found by phone number..
+ *
+ * @param {string} phoneNumber
+ * @returns {boolean}
+ */
+exports.isPhoneNumberExsits = async (phoneNumber) => { return isPhoneNumberExsits(phoneNumber); }
+
+/**
+ * Check if the user is found by email.
+ *
+ * @param {string} email
+ * @returns
+ */
+exports.isEmailExsits = async (email) => { return isEmailExsits(email); }
 
 exports.getUserByPhoneNumber = (phoneNumber) => {
   return getUserByPhoneNumber(phoneNumber);

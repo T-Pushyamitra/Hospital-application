@@ -1,5 +1,3 @@
-// import runServer from "./server.js";
-
 const server = require('./server');
 
 const port = parseInt(process.env.PORT || 3000);
