@@ -1,18 +1,13 @@
-const express = require('express');
+import { Router } from 'express';
 
-const router = express.Router();
+import { getUserListByRoleId, getUsersList, updateUser } from '../controllers/user.controller';
+import { auth, permit } from '../middleware/auth.middleware';
 
-const {
-  getUserListByRoleId,
-  getUsersList,
-  updateUser,
-} = require('../controllers/user.controller');
+const router = Router();
 
-const { auth, permit } = require('../auth/auth.middleware');
-
-router.route('/').get(auth, permit(['CAN_READ_USER']), getUsersList);
-router.route('/:id').post(updateUser);
-router.route('/role/:roleId').get(getUserListByRoleId);
+router.route('/').get(auth, getUsersList);
+router.route('/:id').post(auth, updateUser);
+router.route('/role/:roleId').get(auth, permit(["CAN_READ_ROLE"]), getUserListByRoleId);
 
 
-module.exports = router;
+export default router;
