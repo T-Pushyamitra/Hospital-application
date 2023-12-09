@@ -5,9 +5,8 @@ import { auth, permit } from '../middleware/auth.middleware';
 
 const router = Router();
 
-router.route('/').get(auth, getUsersList);
-router.route('/:id').post(auth, updateUser);
-router.route('/role/:roleId').get(auth, permit(["CAN_READ_ROLE"]), getUserListByRoleId);
-
+router.route('/').get(getUsersList);
+router.route('/:id').post(updateUser);
+router.route('/role/:roleId').get(getUserListByRoleId);
 
 export default router;

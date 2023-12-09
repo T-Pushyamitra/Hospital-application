@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { getRolesList, createNewRole, updateRole, addPermissionsToRole } from '../controllers/role.controller';
 import { auth, permit } from '../auth/auth.middleware';
 
+
 const router = Router();
 
 router.route('/').get(auth, permit(["CAN_READ_ROLE"]), getRolesList).post(auth, permit(["CAN_READ_ROLE", "CAN_ADD_ROLE"]), createNewRole);

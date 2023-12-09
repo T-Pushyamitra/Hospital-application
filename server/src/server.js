@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 
 const express = require("express");
 const cors = require('cors');
+const morgan = require('morgan');
 
 const { apiPath } = require("./helpers/constants");
 
@@ -44,6 +45,13 @@ export const runServer = async (port, mongoUri) => {
     app.use(bodyParser.json({ limit: "10mb" }));
     app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
   
+    morgan.token('host', function(req, res) {
+      return req.hostname;
+    });
+
+    // we are using the host parameter
+    app.use(morgan(':method :host :status - :response-time ms'))
+
     // Pass all the routes here.
     app.use(`${apiPath}/user`, userRoutes);
     app.use(`${apiPath}/auth`, authenticationRoutes);
