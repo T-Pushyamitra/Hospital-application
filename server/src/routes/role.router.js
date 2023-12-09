@@ -3,12 +3,6 @@ import { Router } from 'express';
 import { getRolesList, createNewRole, updateRole, addPermissionsToRole } from '../controllers/role.controller';
 import { auth, permit } from '../auth/auth.middleware';
 
-const {
-  getRolesList,
-  createNewRole,
-  updateRole,
-  addPermissionsToRole,
-} = require('../controllers/role.controller');
 
 const router = Router();
 
