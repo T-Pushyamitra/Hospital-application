@@ -1,4 +1,3 @@
-import { getDateNoTime } from '../helpers/utils';
 import {
   index,
   update,
@@ -8,12 +7,14 @@ import {
 } from '../daos/user.dao';
 import { getRoleById } from '../daos/role.dao';
 
+import { getDateNoTime } from "../helpers/utils";
+
 /**
  * Get all the users.
  *
  * @returns {UserModel}
  */
-exports.getUsers = async () => index();
+exports.getUsers = async () => {return index()};
 
 /**
  * Check if the user is found by phone number..

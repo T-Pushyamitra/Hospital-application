@@ -1,17 +1,12 @@
-const express = require('express');
+import { Router } from 'express';
 
-const router = express.Router();
+import { getUserListByRoleId, getUsersList, updateUser } from '../controllers/user.controller';
+import { auth, permit } from '../middleware/auth.middleware';
 
-const {
-  getUserListByRoleId,
-  getUsersList,
-  updateUser,
-} = require('../controllers/user.controller');
-
+const router = Router();
 
 router.route('/').get(getUsersList);
 router.route('/:id').post(updateUser);
 router.route('/role/:roleId').get(getUserListByRoleId);
 
-
-module.exports = router;
+export default router;

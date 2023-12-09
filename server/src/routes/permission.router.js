@@ -1,15 +1,11 @@
-const express = require('express');
+import { Router } from 'express';
 
-const router = express.Router();
+import { getPermissionsList, createNewPermission, updatePermission } from '../controllers/permission.controller';
+import { auth, permit } from '../auth/auth.middleware';
 
-const {
-  getPermissionsList,
-  createNewPermission,
-  updatePermission,
-} = require('../controllers/permission.controller');
-const { auth, permit } = require('../auth/auth.middleware');
+const router = Router();
 
-router.route('/').get(getPermissionsList).post(createNewPermission);
-router.route('/:id').post(auth, updatePermission);
+router.route('/').get(auth, permit(["CAN_READ_PREMISSION"]), getPermissionsList).post(auth, permit(["CAN_READ_PREMISSION", "CAN_ADD_PREMISSION"]), createNewPermission);
+router.route('/:id').post(auth, permit(["CAN_READ_PREMISSION", "CAN_UPDATE_PERMISSIONS"]), updatePermission);
 
-module.exports = router;
+export default router;
